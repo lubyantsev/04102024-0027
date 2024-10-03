@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Индивидуальные расписания</title>
+</head>
+<body>
+    <h1>Индивидуальные расписания</h1>
+    <p>Введите Пароль расписания для просмотра и редактирования ранее созданного расписания:</p>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="schedule_password" placeholder="Пароль расписания">
+        <button type="submit" name="open_schedule">Открыть расписание</button>
+    </form>
+
+    <h2>Новое расписание</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="password" placeholder="Пароль для нового расписания">
+        <button type="submit" name="create_schedule">Создать</button>
+    </form>
+
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>

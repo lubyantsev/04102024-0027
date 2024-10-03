@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Детали расписания</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+            position: relative; /* Чтобы кнопки могли позиционироваться относительно body */
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #4CAF50; /* default color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .button.pink {
+            background-color: pink;
+        }
+        .button.light-green {
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <h1>Расписание: {{ schedule.password }}</h1>
+
+    <div>
+        {% for event in events %}
+            <button class="button {% if event.who %}pink{% else %}light-green{% endif %}" onclick="editEvent({{ event.id }})">
+                {{ event.when }} - {{ event.where }} - {{ event.who }}
+            </button>
+        {% endfor %}
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ event_form.as_p }}
+        <button type="submit" name="new_event" class="button">Сохранить</button>
+    </form>
+
+    <h2>Кнопки</h2>
+    <div>
+        {% for button in buttons %}
+            <button style="background-color: {{ button.get_color }}; position: absolute; left: {{ button.position_x }}px; top: {{ button.position_y }}px;">
+                {{ button.when }} {{ button.where }} {{ button.who }}
+            </button>
+        {% endfor %}
+    </div>
+
+    <h2>Добавить новую кнопку</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ button_form.as_p }}
+        <input type="hidden" name="position_x" id="position_x" value="">
+        <input type="hidden" name="position_y" id="position_y" value="">
+        <button type="submit" name="new_button" class="button">Сохранить</button>
+    </form>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            // Обновление позиций кнопок при клике
+            document.getElementById('position_x').value = e.clientX - e.target.getBoundingClientRect().left; // Отнимаем от координаты X положение элемента
+            document.getElementById('position_y').value = e.clientY - e.target.getBoundingClientRect().top; // Отнимаем от координаты Y положение элемента
+        });
+
+        function editEvent(eventId) {
+            // Логика для заполнения формы события для редактирования
+        }
+    </script>
+</body>
+</html>

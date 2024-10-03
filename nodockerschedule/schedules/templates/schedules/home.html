@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Индивидуальные расписания</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #4CAF50; /* default color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .button.pink {
+            background-color: pink;
+        }
+        .button.light-green {
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <h1>Индивидуальные расписания</h1>
+    <p>Введите Пароль расписания для просмотра и редактирования ранее созданного расписания</p>
+    <form method="POST">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit" class="button">Открыть расписание</button>
+    </form>
+    <h2>Пароль для нового расписания, его нужно запомнить, он может быть любым, но не слишком длинным</h2>
+    <form action="{% url 'create_schedule' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">Сохранить расписание</button>
+    </form>
+</body>
+</html>
